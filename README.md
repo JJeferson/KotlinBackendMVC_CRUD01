@@ -31,4 +31,11 @@ curl --location --request GET 'localhost:8080/api/lista_clientes_por_nome?nome=t
 curl --location --request GET 'localhost:8080/api/lista_cliente_por_id?id=61317fb6bc041a206fb93bc9' \
 --header 'Content-Type: application/json' \
 --data-raw ' '
+</br>
+</br></br>
+-[Get]-Lista Paginado </br>
+curl --location --request GET 'localhost:8080/api/lista_tudo_paginado?qtde=8&page=0' \
+--header 'Content-Type: application/json' \
+--data-raw ' '
+
 

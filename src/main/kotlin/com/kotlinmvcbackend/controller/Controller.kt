@@ -4,6 +4,9 @@ import com.kotlinmvcbackend.model.Cliente
 import com.kotlinmvcbackend.repository.Repository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.CacheEvict
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
@@ -15,6 +18,30 @@ class Controller {
 
     @Autowired
     var repository: Repository? = null
+
+
+
+    @GetMapping("/lista_tudo_paginado")
+    fun listaTudoPaginado
+            (@RequestParam(value = "qtde"  , required = false, defaultValue = "0")qtde: String,
+             @RequestParam(value = "pagina", required = false, defaultValue = "0")page: String)
+             : ResponseEntity<Page<Cliente?>>
+    {
+        var quantidade = qtde
+        var pagina     = page
+
+        if(quantidade.equals("0")){
+            var listClientes = repository?.findAll()
+            var numero = listClientes?.size
+            quantidade = numero.toString()
+        }
+
+
+        var paginacao: Pageable = PageRequest.of(pagina.toInt(), quantidade.toInt())
+        var listaClientePaginado = repository?.findAll(paginacao)
+        return ResponseEntity.ok<Page<Cliente?>>(listaClientePaginado)
+
+    }
 
 
     @GetMapping("/lista_cliente_por_id")
